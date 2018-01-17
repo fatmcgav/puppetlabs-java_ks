@@ -25,8 +25,8 @@ describe 'managing java pkcs12', :unless => (UNSUPPORTED_PLATFORMS.include?(fact
         }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, :catch_failures => true, :debug => true)
+      apply_manifest(pp, :catch_changes => true, :debug => true)
     end
 
     it 'verifies the private key and chain' do
@@ -61,8 +61,8 @@ describe 'managing java pkcs12', :unless => (UNSUPPORTED_PLATFORMS.include?(fact
         }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, :catch_failures => true, :debug => true)
+      apply_manifest(pp, :catch_changes => true, :debug => true)
     end
 
     it 'verifies the private key and chain' do

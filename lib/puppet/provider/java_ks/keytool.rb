@@ -143,6 +143,7 @@ Puppet::Type.type(:java_ks).provide(:keytool) do
         '-alias', @resource[:name]
     ]
     cmd += [ '-storetype', storetype ] if storetype == "jceks"
+    Puppet.debug("Cmd = #{cmd.inspect}")
     begin
       tmpfile = password_file
       run_command(cmd, false, tmpfile)
@@ -166,13 +167,17 @@ Puppet::Type.type(:java_ks).provide(:keytool) do
     if Puppet[:noop] and !File.exists?(certificate)
       return 'latest'
     elsif storetype == :pkcs12
+      Puppet.debug('PKCS12 store')
       cmd = [
           command_keytool,
           '-list', '-keystore', certificate,
           '-storetype', 'PKCS12', '-storepass', sourcepassword
       ]
+      Puppet.debug("Latest cmd = #{cmd.inspect}")
       output = run_command(cmd)
+      Puppet.debug("Latest cmd output = #{output.inspect}")
       latest = output.scan(/\(SHA1\):\s+(.*)/)[0][0]
+      Puppet.debug("Latest value = #{latest.inspect}")
       return latest
     else
       cmd = [
@@ -198,8 +203,10 @@ Puppet::Type.type(:java_ks).provide(:keytool) do
           '-alias', @resource[:name]
       ]
       cmd += [ '-storetype', storetype ] if storetype == "jceks"
+      Puppet.debug("Current cmd = #{cmd.inspect}")
       tmpfile = password_file
       output = run_command(cmd, false, tmpfile)
+      Puppet.debug("Current output = #{output.inspect}")
       tmpfile.close!
       if output.include? 'MD5:'
         current = output.scan(/Certificate fingerprints:\n\s+MD5:  .*\n\s+SHA1: (.*)/)[0][0]
