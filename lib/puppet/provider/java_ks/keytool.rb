@@ -213,6 +213,7 @@ Puppet::Type.type(:java_ks).provide(:keytool) do
       else
         current = output.scan(/Certificate fingerprints:\n\s+SHA1: (.*)/)[0][0]
       end
+      Puppet.debug("Current = #{current.inspect}")
       return current
     end
   end
